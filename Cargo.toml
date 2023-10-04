@@ -7,7 +7,7 @@ edition = "2021"
 halo2_proofs = { git = "https://github.com/zkonduit/halo2", branch= "ac/mv-lookup2", default_features = false }
 askama = { version = "0.12.0", features = ["config"], default-features = false }
 hex = "0.4.3"
-ruint = "1.10.1"
+ruint = "1.8.0"
 sha3 = "0.10"
 itertools = "0.11.0"
 
