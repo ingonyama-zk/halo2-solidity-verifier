@@ -126,19 +126,27 @@ where
             .lookups()
             .iter()
             .map(|lookup| {
-                let [(input_lines, inputs), (table_lines, tables)] =
-                    [lookup.input_expressions(), lookup.table_expressions()].map(|expressions| {
-                        let (lines, inputs) = expressions
-                            .iter()
-                            .map(|expression| self.evaluate(expression))
-                            .fold((Vec::new(), Vec::new()), |mut acc, result| {
-                                acc.0.extend(result.0);
-                                acc.1.push(result.1);
-                                acc
-                            });
-                        self.reset();
-                        (lines, inputs)
-                    });
+                let [(input_lines, inputs), (table_lines, tables)] = [
+                    &lookup
+                        .input_expressions()
+                        .clone()
+                        .into_iter()
+                        .flatten()
+                        .collect(),
+                    lookup.table_expressions(),
+                ]
+                .map(|expressions| {
+                    let (lines, inputs) = expressions
+                        .iter()
+                        .map(|expression| self.evaluate(expression))
+                        .fold((Vec::new(), Vec::new()), |mut acc, result| {
+                            acc.0.extend(result.0);
+                            acc.1.push(result.1);
+                            acc
+                        });
+                    self.reset();
+                    (lines, inputs)
+                });
                 (input_lines, inputs, table_lines, tables)
             })
             .collect_vec();
